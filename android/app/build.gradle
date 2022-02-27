@@ -48,6 +48,13 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    dependencies {
+        testImplementation 'junit:junit:4.12'
+        androidTestImplementation 'androidx.test:runner:1.5.0-alpha01'
+        androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0-alpha04'
     }
 
     buildTypes {
