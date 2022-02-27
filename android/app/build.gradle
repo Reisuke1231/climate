@@ -64,9 +64,6 @@ android {
             signingConfig signingConfigs.debug
         }
     }
-
-    useAndroidX=true
-    enableJetifier=true
 }
 
 flutter {
