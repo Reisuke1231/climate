@@ -1,17 +1,14 @@
-import 'package:climate/services/location.dart';
-import 'package:climate/services/networking.dart';
+import 'package:climate/screens/location_screen.dart';
+import 'package:climate/services/weather_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class LoadingScreen extends StatefulWidget {
-  Location location = Location();
-
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  late double latitude;
-  late double longitude;
   @override
   void initState() {
     super.initState();
@@ -20,49 +17,24 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   void getLocationData() async {
-    Location location = Location();
-    await location.getCurrentLocation();
+    var weatherData = await WeatherModel().getLocationWeather();
 
-    latitude = location.latitude;
-    longitude = location.longitude;
-
-    Uri uri = Uri.http(
-      'samples.openweathermap.org',
-      '/data/2.5/forecast',
-      {
-        'lat': '35',
-        'lon': '139',
-        'appid': apiKey,
-      },
-    );
-
-    NetworkHelper networkHelper = NetworkHelper(url: uri);
-
-    var weatherData = await networkHelper.getData();
-
-    print(weatherData);
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return LocationScreen(
+        locationWeather: weatherData,
+      );
+    }));
   }
 
   @override
   Widget build(BuildContext context) {
-    String myMargin = 'abc';
-
-    try {
-      double myMarginAsADouble = double.parse(myMargin);
-      return Scaffold(
-        body: Container(
-          margin: EdgeInsets.all(myMarginAsADouble),
-          color: Colors.red,
+    return Scaffold(
+      body: Center(
+        child: SpinKitRing(
+          color: Colors.white,
+          size: 100.0,
         ),
-      );
-    } catch (e) {
-      print(e);
-      return Scaffold(
-        body: Container(
-          margin: EdgeInsets.all(30),
-          color: Colors.red,
-        ),
-      );
-    }
+      ),
+    );
   }
 }
